@@ -1,17 +1,26 @@
-// select data-time attributes
-const timeNodes = [...document.querySelectorAll("[data-time]")]; // create array from nodelist using Array.from() or destructurning
+let timeNodes = [...document.querySelectorAll("[data-time]")];
 
-// return the total seconds summary for the videos
-const seconds = timeNodes
+let seconds = timeNodes
   .map(node => node.dataset.time)
-  .map(item => {
-    const [a, b] = item.split(":").map(parseFloat); // run parseFloat function to convert string to integer
-
+  .map(timeStr => {
+    [a, b] = timeStr.split(":").map(parseFloat);
     return a * 60 + b;
   })
-  .reduce((total, value) => {
-    // reduce function will summarize the values
-    return (total += value);
-  }, 0);
+  .reduce((total, cur) => (total += cur), 0);
 
-console.log(seconds);
+let hours, minutes;
+
+hours = Math.floor(seconds / 3600);
+let secondsLeft = seconds % 3600;
+
+minutes = Math.floor(secondsLeft / 60);
+
+seconds = secondsLeft % 60;
+
+let obj = {
+  h: hours,
+  m: minutes,
+  s: seconds
+};
+
+console.log(obj);
